@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title>To-Do-List Odin Project</title>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <div id="content">
+        <div class="sidebar"></div>
+        <div class="tasks-container">
+          <form action="" id="todo-form"></form>
+          <label for="title-task">Title:</label>
+          <input type="text" id="title" placeholder="Title" required />
+
+          <label for="description">Description:</label>
+          <input
+            type="text"
+            id="description"
+            placeholder="Description of your task"
+          />
+
+          <label for="priority-task">Priority:</label>
+          <input type="radio" id="low-priority" name="priority" value="low" />
+          <label for="low">Low</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="medium-priority"
+            name="priority"
+            value="medium"
+            checked
+          />
+          <label for="medium">Medium</label>
+        </div>
+        <div>
+          <input type="radio" id="high-priority" name="priority" value="high" />
+          <label for="high">High</label>
+
+          <label for="due-date">Due-date:</label>
+          <input type="text" id="date-task" placeholder="due date" />
+
+          <button type="submit" id="submit-button">Submit</button>
+        </div>
+
+        <!-- <button id="new-task">Add new Task</button>
+        <form action="" id="task-form">
+          <label for="title">Task name</label>
+        </form> -->
+      </div>
+    </main>
+    <footer></footer>
+  </body>
+</html>
