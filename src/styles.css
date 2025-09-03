@@ -1,3 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   background-color: rgb(15, 46, 104);
+}
+
+.content {
+  display: flex;
+  height: 100vh;
+}
+
+.todo-form.hidden {
+  display: none;
+}
+
+.todo-form {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.sidebar {
+  background-color: #ddd;
+  width: 256px;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.tasks-container {
+  float: right;
 }
