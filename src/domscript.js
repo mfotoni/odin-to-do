@@ -20,17 +20,12 @@ export function InitialDomScript() {
 
 export const UI = (function () {
   // const newTaskForm = document.querySelector(".todo-form");
-
   const titleTask = document.getElementById("title-task");
   const descriptionTask = document.getElementById("description-task");
-
   const priority = document.querySelector('input[name="priority"]:checked');
-
   const submitTodoBtn = document.getElementById("submit-button");
-
   const showTaskButton = document.getElementById("new-task");
   const newTaskForm = document.querySelector(".todo-form");
-
   // projects
   const projectForm = document.getElementById("new-project-form");
   const projectTitle = document.getElementById("new-project-title");

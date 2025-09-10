@@ -1,11 +1,9 @@
-import { addProject } from "./state.js";
+import { addProject, Project } from "./state.js";
 
 export function firstProjectLoad() {
-  let projectsArray = [];
-  let projectTitle = "Default Project";
+  const projectTitle = "Test Project";
+  const defaultProject = new Project(projectTitle);
 
-  projectsArray.push({ projectTitle });
-  console.log(projectsArray);
-
-  return { projectsArray, projectTitle };
+  addProject(defaultProject);
+  return { projectTitle };
 }

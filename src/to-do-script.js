@@ -1,13 +1,24 @@
 import { UI } from "./domscript.js";
+import {
+  addTodo,
+  getTodos,
+  addProject,
+  getProjects,
+  Project,
+} from "./state.js";
 
 let toDoArray = [];
 let projectsArray = [];
 
 export function makeTodo(title, description, dueDate, priority) {
   console.log(title, description, dueDate, priority);
-  toDoArray.push({ title, description, dueDate, priority });
-  console.log(toDoArray);
-  return { title, description, dueDate, priority };
+  // toDoArray.push({ title, description, dueDate, priority });
+  // console.log(toDoArray);
+  const newTodo = { title, description, dueDate, priority };
+  addTodo(newTodo);
+  console.log(getTodos());
+  return newTodo;
+  // return { title, description, dueDate, priority };
 }
 
 // class CreateTodo {
@@ -23,14 +34,12 @@ export function makeTodo(title, description, dueDate, priority) {
 
 export function createProject() {
   const title = UI.projectTitle.value.trim();
-  // todos = [];
   if (!title) return;
 
   const newProject = new Project(title);
-  projectsArray.push(newProject);
+  addProject(newProject);
 
   UI.projectTitle.value = "";
-
   renderProjectsSidebar();
 
   return newProject;
@@ -40,6 +49,7 @@ export function renderProjectsSidebar() {
   const sideBarUl = document.getElementById("sidebar-ul");
   sideBarUl.innerHTML = "";
 
+  const projectsArray = getProjects();
   projectsArray.forEach((project) => {
     const li = document.createElement("li");
     li.textContent = project.name;
@@ -47,17 +57,17 @@ export function renderProjectsSidebar() {
   });
 }
 
-UI.projectForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  createProject();
-});
+// UI.projectForm.addEventListener("submit", (e) => {
+//   e.preventDefault();
+//   createProject();
+// });
 
-class Project {
-  constructor(name) {
-    this.name = name;
-    this.todoList = [];
-  }
-}
+// UI.showTaskButton.addEventListener("click", () => {
+//   console.log("clicou no botão");
+//   UI.newTaskForm.classList.toggle("hidden");
+// });
+
+// Project class moved to state.js and imported above
 
 // class TodoManager {
 //   markComplete() {}
