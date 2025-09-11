@@ -7,8 +7,8 @@ import {
   Project,
 } from "./state.js";
 
-let toDoArray = [];
-let projectsArray = [];
+// let toDoArray = [];
+// let projectsArray = [];
 
 export function makeTodo(title, description, dueDate, priority) {
   console.log(title, description, dueDate, priority);

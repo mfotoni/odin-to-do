@@ -1,28 +1,9 @@
-import { firstProjectLoad } from "./first-load.js";
-
-export function InitialDomScript() {
-  const contentDiv = document.querySelector(".content");
-  const heading = document.createElement("h1");
-
-  heading.textContent = "To-do Odin";
-  contentDiv.appendChild(heading);
-
-  // DOM for first project load
-  const projectInfoDiv = document.createElement("div");
-  projectInfoDiv.textContent = firstProjectLoad().projectTitle;
-  contentDiv.appendChild(projectInfoDiv);
-}
-
-// toggle new task form
-// export function showTaskForm(){
-
-// }
+// import { firstProjectLoad } from "./first-load.js";
 
 export const UI = (function () {
   // const newTaskForm = document.querySelector(".todo-form");
   const titleTask = document.getElementById("title-task");
   const descriptionTask = document.getElementById("description-task");
-  const priority = document.querySelector('input[name="priority"]:checked');
   const submitTodoBtn = document.getElementById("submit-button");
   const showTaskButton = document.getElementById("new-task");
   const newTaskForm = document.querySelector(".todo-form");
@@ -31,13 +12,16 @@ export const UI = (function () {
   const projectTitle = document.getElementById("new-project-title");
   const addProjectBtn = document.querySelector("#add-project-btn");
 
+  const getPriority = () =>
+    document.querySelector('input[name="priority"]:checked')?.value || null;
+
   return {
     addProjectBtn,
     projectForm,
     projectTitle,
     titleTask,
     descriptionTask,
-    priority,
+    getPriority,
     submitTodoBtn,
     showTaskButton,
     newTaskForm,
