@@ -1,6 +1,7 @@
 // import { firstProjectLoad } from "./first-load.js";
 
 export const UI = (function () {
+  const tasksContainer = document.querySelector(".tasks-container");
   // const newTaskForm = document.querySelector(".todo-form");
   const titleTask = document.getElementById("title-task");
   const descriptionTask = document.getElementById("description-task");
@@ -16,6 +17,7 @@ export const UI = (function () {
     document.querySelector('input[name="priority"]:checked')?.value || null;
 
   return {
+    tasksContainer,
     addProjectBtn,
     projectForm,
     projectTitle,

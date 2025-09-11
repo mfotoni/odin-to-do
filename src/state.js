@@ -1,6 +1,22 @@
 let projectsArray = [];
 let toDoArray = [];
 let currentProjectIndex = null;
+let currentTodoId = null;
+
+export function setCurrentTodoId(id) {
+  currentTodoId = id;
+}
+
+export function getCurrentTodo(project) {
+  if (!project || !currentTodoId) return null;
+  return project.todoList.find((t) => t.id === currentTodoId || null);
+}
+
+export function updateTodo(project, id, partial) {
+  if (!project) return;
+  const t = project.todoList.find((x) => x.id === id);
+  if (t) Object.assign(t, partial);
+}
 
 export class Project {
   constructor(name) {
