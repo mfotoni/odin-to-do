@@ -1,14 +1,18 @@
 import "./styles.css";
-import { makeTodo } from "./to-do-script.js";
-// import { firstProjectLoad } from "./first-load.js";
+import {
+  makeTodo,
+  createProject,
+  renderProjectsSidebar,
+} from "./to-do-script.js";
+import { firstProjectLoad } from "./first-load.js";
 import { UI } from "./domscript.js";
-import { createProject, renderProjectsSidebar } from "./to-do-script.js";
 
 // call dom manipulation modulo to control UI
 
 // click event modulo here for to-do and project creations
 // makeTodo("teste comer cu", "comer cu de curioso", "amanha", "high");
 
+firstProjectLoad();
 renderProjectsSidebar();
 
 UI.showTaskButton.addEventListener("click", () => {

@@ -5,6 +5,9 @@ import {
   addProject,
   getProjects,
   Project,
+  getCurrentProject,
+  setCurrentProjectIndex,
+  getCurrentProjectIndex,
 } from "./state.js";
 
 // let toDoArray = [];
@@ -12,13 +15,18 @@ import {
 
 export function makeTodo(title, description, dueDate, priority) {
   console.log(title, description, dueDate, priority);
-  // toDoArray.push({ title, description, dueDate, priority });
-  // console.log(toDoArray);
+
   const newTodo = { title, description, dueDate, priority };
-  addTodo(newTodo);
+  const current = getCurrentProject();
+
+  if (current) {
+    current.todoList.push(newTodo);
+  } else {
+    addTodo(newTodo);
+  }
+
   console.log(getTodos());
   return newTodo;
-  // return { title, description, dueDate, priority };
 }
 
 // class CreateTodo {
@@ -39,6 +47,8 @@ export function createProject() {
   const newProject = new Project(title);
   addProject(newProject);
 
+  setCurrentProjectIndex(getProjects().length - 1);
+
   UI.projectTitle.value = "";
   renderProjectsSidebar();
 
@@ -50,9 +60,25 @@ export function renderProjectsSidebar() {
   sideBarUl.innerHTML = "";
 
   const projectsArray = getProjects();
-  projectsArray.forEach((project) => {
+  const selected = getCurrentProjectIndex();
+
+  projectsArray.forEach((project, index) => {
     const li = document.createElement("li");
     li.textContent = project.name;
+    li.dataset.index = index;
+
+    if (index === selected) {
+      li.style.fontWeight = "700";
+    }
+
+    li.addEventListener("click", () => {
+      setCurrentProjectIndex(index);
+      renderProjectsSidebar();
+
+      // renderizar as tasks do projeto selecionado
+      renderProjectTasks();
+    });
+
     sideBarUl.appendChild(li);
   });
 }

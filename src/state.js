@@ -1,5 +1,6 @@
 let projectsArray = [];
 let toDoArray = [];
+let currentProjectIndex = null;
 
 export class Project {
   constructor(name) {
@@ -18,6 +19,7 @@ export function setProjects(projects) {
 
 export function addProject(project) {
   projectsArray.push(project);
+  if (currentProjectIndex === null) currentProjectIndex = 0;
 }
 
 export function getTodos() {
@@ -30,6 +32,21 @@ export function setTodos(todos) {
 
 export function addTodo(todo) {
   toDoArray.push(todo);
+}
+
+export function getCurrentProjectIndex() {
+  return currentProjectIndex;
+}
+
+export function setCurrentProjectIndex(index) {
+  if (index >= 0 && index < projectsArray.length) {
+    currentProjectIndex = index;
+  }
+}
+
+export function getCurrentProject() {
+  if (currentProjectIndex === null) return null;
+  return projectsArray[currentProjectIndex] || null;
 }
 
 // local storage
