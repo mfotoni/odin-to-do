@@ -76,7 +76,7 @@ export function renderProjectsSidebar() {
       renderProjectsSidebar();
 
       // renderizar as tasks do projeto selecionado
-      renderProjectTasks();
+      // renderProjectTasks();
     });
 
     sideBarUl.appendChild(li);
