@@ -9,7 +9,11 @@ export function setCurrentTodoId(id) {
 
 export function getCurrentTodo(project) {
   if (!project || !currentTodoId) return null;
-  return project.todoList.find((t) => t.id === currentTodoId || null);
+  return project.todoList.find((t) => t.id === currentTodoId);
+}
+
+export function getCurrentTodoId() {
+  return currentTodoId;
 }
 
 export function updateTodo(project, id, partial) {
@@ -63,6 +67,16 @@ export function setCurrentProjectIndex(index) {
 export function getCurrentProject() {
   if (currentProjectIndex === null) return null;
   return projectsArray[currentProjectIndex] || null;
+}
+
+export function deleteTodo(project, id) {
+  if (!project) return false;
+  const index = project.todoList.findIndex((t) => t.id === id);
+  if (index !== -1) {
+    project.todoList.splice(index, 1);
+    return true;
+  }
+  return false;
 }
 
 // local storage

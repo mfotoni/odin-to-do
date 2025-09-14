@@ -9,12 +9,50 @@ import {
   setCurrentProjectIndex,
   getCurrentProjectIndex,
   setCurrentTodoId,
+  getCurrentTodoId,
   getCurrentTodo,
   updateTodo,
+  deleteTodo,
 } from "./state.js";
+import { isFuture, parse } from "date-fns";
+
+// 4. Criação de Datas com Validação
+// import { isValid, isFuture, parseISO } from 'date-fns'
+
+// function createTodoWithValidation(todoData) {
+//   // Validação da data
+//   const dueDate = parseISO(todoData.dueDate)
+
+//   if (!isValid(dueDate)) {
+//     throw new Error('Data de vencimento inválida')
+//   }
+
+//   if (!isFuture(dueDate)) {
+//     throw new Error('Data de vencimento deve ser no futuro')
+//   }
+
+//   return {
+//     id: Date.now(),
+//     ...todoData,
+//     dueDate: dueDate.toISOString(),
+//     createdAt: new Date().toISOString()
+//   }
+// }
 
 export function makeTodo(title, description, dueDate, priority) {
   console.log(title, description, dueDate, priority);
+
+  // date validation
+  if (dueDate) {
+    try {
+      const inputDate = parse(dueDate, "dd/MM/yyyy", new Date());
+      if (!isFuture(inputDate)) {
+        alert("Due date must be in future");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
   const newTodo = {
     id: crypto.randomUUID(),
@@ -31,7 +69,6 @@ export function makeTodo(title, description, dueDate, priority) {
     addTodo(newTodo);
   }
 
-  console.log(getTodos());
   return newTodo;
 }
 
@@ -81,51 +118,96 @@ export function renderProjectsSidebar() {
 export function renderProjectTasks() {
   const container = document.querySelector(".tasks-container");
   if (!container) return;
-  let list = container.querySelector("#project-tasks");
-  if (!list) {
-    list = document.createElement("ul");
-    list.id = "project-tasks";
-    container.appendChild(list);
+
+  let grid = container.querySelector("#project-tasks");
+  if (!grid) {
+    grid = document.createElement("div");
+    grid.id = "project-tasks";
+    container.appendChild(grid);
   }
 
-  list.innerHTML = "";
+  grid.innerHTML = "";
 
   const current = getCurrentProject();
   if (!current) {
-    // const li = document.createElement("li");
-    // li.textContent = "No project Selected";
-    // list.appendChild(li);
-    list.textContent = "No project selected";
+    grid.textContent = "No project selected";
 
     return;
   }
 
   if (current.todoList.length === 0) {
-    // const li = document.createElement("li");
-    // li.textContent = "No tasks yet";
-    // list.appendChild(li);
-    list.textContent = "No tasks yet";
+    grid.textContent = "No tasks yet";
 
     return;
   }
 
   current.todoList.forEach((t) => {
-    const li = document.createElement("li");
-    li.textContent = `${t.title} | ${t.dueDate || "no date"} | ${
-      t.priority || "-"
-    }`;
-    li.dataset.todoId = t.id;
-    li.style.cursor = "pointer";
-    li.addEventListener("click", () => {
-      setCurrentTodoId(t.id);
-      renderTodoDetails();
+    const card = document.createElement("li");
+    card.className = "todo-card";
+    card.dataset.todoId = t.id;
+
+    const title = document.createElement("div");
+    title.className = "todo-title";
+    title.textContent = t.title;
+
+    const desc = document.createElement("div");
+    desc.className = "todo-desc";
+    desc.textContent = t.description || "";
+
+    const meta = document.createElement("div");
+    meta.className = "todo-meta";
+    const date = document.createElement("span");
+    date.textContent = t.dueDate || "no date";
+    const badge = document.createElement("span");
+    const pr = (t.priority || "medium").toLowerCase();
+    badge.className = `badge badge-${pr}`;
+    badge.textContent = pr;
+
+    meta.append(date, "•", badge);
+
+    const actions = document.createElement("div");
+    actions.className = "todo-actions";
+
+    // button edit - open to-do details edit
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.addEventListener("click", () => {
+      if (
+        getCurrentTodoId() === t.id &&
+        document.querySelector("#todo-details")?.style.display !== "none"
+      ) {
+        closeTodoDetails();
+      } else {
+        setCurrentTodoId(t.id);
+        renderTodoDetails();
+      }
     });
 
-    list.appendChild(li);
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.style.backgroundColor = "#dc2626";
+    deleteBtn.style.color = "white";
+    deleteBtn.style.border = "none";
+    deleteBtn.style.borderRadius = "4px";
+    deleteBtn.style.padding = "4px 8px";
+    deleteBtn.style.fontSize = "11px";
+    deleteBtn.style.cursor = "pointer";
+
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const deleted = deleteTodo(current, t.id);
+      if (deleted) {
+        renderProjectTasks();
+      }
+    });
+
+    actions.append(editBtn, deleteBtn);
+    card.append(title, desc, meta, actions);
+    grid.appendChild(card);
   });
 }
 
-// painel pra ver/editar to-do
+// panel to edit to-do
 export function renderTodoDetails() {
   const container = document.querySelector(".tasks-container");
   if (!container) return;
@@ -138,9 +220,12 @@ export function renderTodoDetails() {
     panel.style.padding = "12px";
     panel.style.border = "1px solid #e5e7eb";
     panel.style.borderRadius = "8px";
+    panel.style.backgroundColor = "#f9fafb";
 
     container.appendChild(panel);
   }
+
+  panel.style.display = "block";
 
   const project = getCurrentProject();
   const todo = getCurrentTodo(project);
@@ -151,40 +236,76 @@ export function renderTodoDetails() {
 
   panel.innerHTML = "";
 
-  const title = input("text", todo.title);
-  const desc = input("text", todo.description || "");
-  const date = input("text", todo.dueDate || "");
+  // header and close button
+  const header = document.createElement("div");
+  header.style.display = "flex";
+  header.style.justifyContent = "space-between";
+  header.style.alignItems = "center";
+  header.style.marginBottom = "12px";
 
-  const priority = document.createElement("select");
+  const title = document.createElement("h3");
+  title.textContent = "Edit Task";
+  title.style.margin = "0";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "×";
+  closeBtn.style.background = "none";
+  closeBtn.style.border = "none";
+  closeBtn.style.fontSize = "20px";
+  closeBtn.style.cursor = "pointer";
+  closeBtn.style.padding = "4px 8px";
+  closeBtn.addEventListener("click", closeTodoDetails);
+
+  header.append(title, closeBtn);
+
+  // edit fields
+  const titleInput = input("text", todo.title);
+  const descInput = input("text", todo.description || "");
+  const dateInput = input("text", todo.dueDate || "");
+
+  const prioritySelect = document.createElement("select");
   ["low", "medium", "high"].forEach((p) => {
     const opt = document.createElement("option");
     opt.value = p;
     opt.textContent = p;
     if (todo.priority === p) opt.selected = true;
-    priority.appendChild(opt);
+    prioritySelect.appendChild(opt);
   });
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.style.display = "flex";
+  buttonContainer.style.gap = "8px";
+  buttonContainer.style.marginTop = "12px";
 
   const saveBtn = document.createElement("button");
   saveBtn.textContent = "Save";
-  saveBtn.style.marginTop = "12px";
+  saveBtn.style.padding = "8px 16px";
+  saveBtn.style.backgroundColor = "#3b82f6";
+  saveBtn.style.color = "white";
+  saveBtn.style.border = "none";
+  saveBtn.style.borderRadius = "6px";
+  saveBtn.style.cursor = "pointer";
+
   saveBtn.addEventListener("click", () => {
     updateTodo(project, todo.id, {
-      title: title.value.trim(),
-      description: desc.value.trim(),
-      dueDate: date.value.trim(),
-      priority: priority.value,
+      title: titleInput.value.trim(),
+      description: descInput.value.trim(),
+      dueDate: dateInput.value.trim(),
+      priority: prioritySelect.value,
     });
 
     renderProjectTasks();
-    renderTodoDetails();
+    closeTodoDetails();
   });
 
+  buttonContainer.append(saveBtn);
   panel.append(
-    labelWrap("Title", title),
-    labelWrap("Description", desc),
-    labelWrap("Due Date", date),
-    labelWrap("Priority", priority),
-    saveBtn
+    header,
+    labelWrap("Title", titleInput),
+    labelWrap("Description", descInput),
+    labelWrap("Due Date", dateInput),
+    labelWrap("Priority", prioritySelect),
+    buttonContainer
   );
 }
 
@@ -206,6 +327,15 @@ function labelWrap(text, el) {
   wrap.append(label, el);
 
   return wrap;
+}
+
+function closeTodoDetails() {
+  const panel = document.querySelector("#todo-details");
+  if (panel) {
+    panel.style.display = "none";
+  }
+
+  setCurrentTodoId(null);
 }
 
 // UI.projectForm.addEventListener("submit", (e) => {
