@@ -29,11 +29,3 @@ export const UI = (function () {
     newTaskForm,
   };
 })();
-
-// const showTaskButton = document.getElementById("new-task");
-// const newTaskForm = document.querySelector(".todo-form");
-
-// UI.showTaskButton.addEventListener("click", () => {
-//   console.log("clicou no botão");
-//   UI.newTaskForm.classList.toggle("hidden");
-// });

@@ -10,11 +10,6 @@ import { setCurrentTodoId, getCurrentProject } from "./state.js";
 import { firstProjectLoad } from "./first-load.js";
 import { UI } from "./domscript.js";
 
-// call dom manipulation modulo to control UI
-
-// click event modulo here for to-do and project creations
-// makeTodo("teste comer cu", "comer cu de curioso", "amanha", "high");
-
 firstProjectLoad();
 renderProjectsSidebar();
 renderProjectTasks();
