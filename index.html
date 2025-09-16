@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title>To-Do-List Odin Project</title>
+    <style>
+      /* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(15, 46, 104);
+}
+
+.content {
+  display: flex;
+  height: 100vh;
+}
+
+.todo-form.hidden {
+  display: none;
+}
+
+.todo-form {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.sidebar {
+  background-color: #ddd;
+  width: 256px;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.tasks-container {
+  float: right;
+} */
+    </style>
+  <script defer src="main.js"></script></head>
+  <body>
+    <header></header>
+
+    <div class="content">
+      <nav class="sidebar">
+        <div id="sidebar-header">
+          <h3>Projects List</h3>
+        </div>
+        <ul id="sidebar-ul">
+          <!-- projects will be added here -->
+        </ul>
+        <form action="" id="new-project-form">
+          <input
+            type="text"
+            id="new-project-title"
+            placeholder="Name Your Project"
+            required
+          />
+          <button id="add-project-btn">New Project</button>
+        </form>
+      </nav>
+
+      <main class="main-container">
+        <div class="tasks-container">
+          <form action="" class="todo-form hidden">
+            <label for="title-task">Title:</label>
+            <input type="text" id="title-task" placeholder="Title" required />
+
+            <label for="description-task">Description:</label>
+            <input
+              type="text"
+              id="description-task"
+              placeholder="Description of your task"
+            />
+
+            <fieldset>
+              <legend>Priority:</legend>
+
+              <input
+                type="radio"
+                id="low-priority"
+                name="priority"
+                value="low"
+              />
+              <label for="low-priority">Low</label>
+
+              <input
+                type="radio"
+                id="medium-priority"
+                name="priority"
+                value="medium"
+                checked
+              />
+              <label for="medium-priority">Medium</label>
+
+              <input
+                type="radio"
+                id="high-priority"
+                name="priority"
+                value="high"
+              />
+              <label for="high-priority">High</label>
+            </fieldset>
+
+            <label for="date-task">Due-date:</label>
+            <input type="text" id="date-task" placeholder="due date" />
+
+            <button type="submit" id="submit-button">Submit</button>
+          </form>
+        </div>
+
+        <button id="new-task">Add new Task</button>
+        <!-- <form action="" id="task-form">
+          <label for="title">Task name</label>
+        </form> -->
+      </main>
+    </div>
+
+    <footer></footer>
+    <script>
+      // //             // arquivo index.js
+      // import { InitialDomScript } from "./domscript.js";
+      // import { UI } from "./domscript.js";
+
+      // // call FirstProjectLoad on first land
+      // firstProjectLoad();
+
+      // // call dom manipulation modulo to control UI
+      // InitialDomScript();
+
+      // // click event modulo here for to-do and project creations
+      // makeTodo("teste comer cu", "comer cu de curioso", "amanha", "high");
+
+      // UI.showTaskButton.addEventListener("click", () => {
+      //   console.log("clicou no botão");
+      //   UI.newTaskForm.classList.toggle("hidden");
+      // });
+
+      // //                   // arquivo to-do-script.js
+      // import { UI } from "./domscript.js";
+
+      // let toDoArray = [];
+
+      // export function makeTodo(title, description, dueDate, priority) {
+      //   console.log(title, description, dueDate, priority);
+      //   toDoArray.push({ title, description, dueDate, priority });
+      //   console.log(toDoArray);
+      //   return { title, description, dueDate, priority };
+      // }
+
+      // class CreateTodo {
+      //   constructor(title, description, dueDate, priority) {
+      //     this.title = title;
+      //     this.description = description;
+      //     this.dueDate = dueDate;
+      //     this.priority = priority;
+
+      //     // adicionar id unico
+      //   }
+      // }
+
+      // export function createProject(title) {
+      //   title = UI.projectTitle.value;
+      //   todos = [];
+      // }
+
+      // class Project {
+      //   constructor(name, description, todoList) {
+      //     this.name = name;
+      //     this.description = description;
+      //     this.todoList = [];
+      //   }
+      // }
+
+      // class TodoManager {
+      //   markComplete() {}
+      //   updatePriority() {}
+
+      //   // adicionar um array de projetos
+      // }
+
+      // import { firstProjectLoad } from "./first-load.js";
+
+      // export function InitialDomScript() {
+      //   const contentDiv = document.querySelector(".content");
+      //   const heading = document.createElement("h1");
+
+      //   heading.textContent = "To-do Odin";
+      //   contentDiv.appendChild(heading);
+
+      //   // DOM for first project load
+      //   const projectInfoDiv = document.createElement("div");
+      //   projectInfoDiv.textContent = firstProjectLoad().projectTitle;
+      //   contentDiv.appendChild(projectInfoDiv);
+      // }
+
+      // // toggle new task form
+      // // export function showTaskForm(){
+
+      // // }
+
+      // export const UI = (function () {
+      //   // const newTaskForm = document.querySelector(".todo-form");
+
+      //   const titleTask = document.getElementById("title-task");
+      //   const descriptionTask = document.getElementById("description-task");
+
+      //   const priority = document.querySelector('input[name="priority"]:checked');
+
+      //   const submitTodoBtn = document.getElementById("submit-button");
+
+      //   const showTaskButton = document.getElementById("new-task");
+      //   const newTaskForm = document.querySelector(".todo-form");
+
+      //   // projects
+      //   const projectForm = document.getElementById("new-project-form");
+      //   const projectTitle = document.getElementById("new-project-title");
+      //   const addProjectBtn = document.querySelector("#add-project-btn");
+
+      //   return {
+      //     addProjectBtn,
+      //     projectForm,
+      //     projectTitle,
+      //     titleTask,
+      //     descriptionTask,
+      //     priority,
+      //     submitTodoBtn,
+      //     showTaskButton,
+      //     newTaskForm,
+      //   };
+      // })();
+    </script>
+  </body>
+</html>
