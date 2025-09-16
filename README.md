@@ -1,4 +1,4 @@
-## To‑Do List (OOP + Webpack)
+## To‑Do List
 
 A lightweight projects-and-tasks web app built with modular JavaScript and object‑oriented design, bundled with Webpack. Create projects, add tasks with priorities and due dates, edit or delete tasks, and persist data locally in the browser.
 
