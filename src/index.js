@@ -40,10 +40,10 @@ UI.newTaskForm.addEventListener("submit", (e) => {
 
   const todo = makeTodo(title, descript, date, priori);
   renderProjectTasks();
-  if (!todo) {
-    setCurrentTodoId(todo.id);
-    renderTodoDetails();
-  }
+  // if (!todo) {
+  //   setCurrentTodoId(todo.id);
+  //   renderTodoDetails();
+  // }
 
   UI.newTaskForm.classList.add("hidden");
   UI.titleTask.value = "";

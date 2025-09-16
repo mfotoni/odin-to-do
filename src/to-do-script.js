@@ -13,31 +13,9 @@ import {
   getCurrentTodo,
   updateTodo,
   deleteTodo,
+  saveToStorage,
 } from "./state.js";
 import { isFuture, parse } from "date-fns";
-
-// 4. Criação de Datas com Validação
-// import { isValid, isFuture, parseISO } from 'date-fns'
-
-// function createTodoWithValidation(todoData) {
-//   // Validação da data
-//   const dueDate = parseISO(todoData.dueDate)
-
-//   if (!isValid(dueDate)) {
-//     throw new Error('Data de vencimento inválida')
-//   }
-
-//   if (!isFuture(dueDate)) {
-//     throw new Error('Data de vencimento deve ser no futuro')
-//   }
-
-//   return {
-//     id: Date.now(),
-//     ...todoData,
-//     dueDate: dueDate.toISOString(),
-//     createdAt: new Date().toISOString()
-//   }
-// }
 
 export function makeTodo(title, description, dueDate, priority) {
   console.log(title, description, dueDate, priority);
@@ -48,6 +26,7 @@ export function makeTodo(title, description, dueDate, priority) {
       const inputDate = parse(dueDate, "dd/MM/yyyy", new Date());
       if (!isFuture(inputDate)) {
         alert("Due date must be in future");
+        return false;
       }
     } catch (error) {
       throw error;
@@ -65,6 +44,7 @@ export function makeTodo(title, description, dueDate, priority) {
 
   if (current) {
     current.todoList.push(newTodo);
+    saveToStorage();
   } else {
     addTodo(newTodo);
   }
@@ -337,26 +317,3 @@ function closeTodoDetails() {
 
   setCurrentTodoId(null);
 }
-
-// UI.projectForm.addEventListener("submit", (e) => {
-//   e.preventDefault();
-//   createProject();
-// });
-
-// UI.showTaskButton.addEventListener("click", () => {
-//   console.log("clicou no botão");
-//   UI.newTaskForm.classList.toggle("hidden");
-// });
-
-// Project class moved to state.js and imported above
-
-// class TodoManager {
-//   markComplete() {}
-//   updatePriority() {}
-
-//   // adicionar um array de projetos
-// }
-
-// Pense em um ProjectManager que é responsável apenas por operações relacionadas a projetos: criar, deletar, encontrar, listar projetos. Ele mantém o array de projetos e conhece todas as operações que você pode fazer com projetos, mas não se preocupa com como os to-dos individuais funcionam.
-
-// Paralelamente, cada projeto individual pode ter sua própria lógica para gerenciar seus to-dos. A classe Project seria responsável por adicionar, remover e organizar to-dos dentro de si mesma. Ela não precisa saber como outros projetos funcionam ou como a aplicação toda está estruturada.
